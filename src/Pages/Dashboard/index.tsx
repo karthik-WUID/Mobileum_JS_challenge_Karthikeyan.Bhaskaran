@@ -6,6 +6,7 @@ import {
   GlobalContextType,
 } from "../../Providers/global-provider";
 import Tile from "../../Components/Tile";
+import { smartPhoneTypes } from "../../Utilities/constants";
 
 const Dashboard: React.FC = () => {
   const { smartPhoneData, setSmartPhoneData } = useContext(
@@ -16,7 +17,7 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     if (!smartPhoneData || smartPhoneData.length < 1) {
       API.getAll()
-        .then((response: any) => {
+        .then((response: smartPhoneTypes[]) => {
           setSmartPhoneData(response);
           setFilteredSmartPhone(response);
         })
@@ -26,7 +27,7 @@ const Dashboard: React.FC = () => {
     }
   }, []);
 
-  const HandleOnChange = (event: any) => {
+  const HandleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.value) {
       setFilteredSmartPhone(
         smartPhoneData.filter(
@@ -48,7 +49,7 @@ const Dashboard: React.FC = () => {
     <DashboardContainer>
       <Heading>Dashboard</Heading>
       <SearchContainer><input type="text" placeholder="Seach by Name or Brand..." onChange={HandleOnChange} /></SearchContainer>
-      <Tile tileData={filteredSmartPhone} isTile={true} />
+      <Tile tileData={filteredSmartPhone} isTile={true} setFilteredSmartPhone={setFilteredSmartPhone} />
     </DashboardContainer>
   );
 };

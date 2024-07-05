@@ -141,7 +141,7 @@ export class API {
     brand: string = "",
     image: string = "",
     description: string = ""
-  ): Promise<void> {
+  ): Promise<Smartphone[]> {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         id = id + 1;
@@ -149,7 +149,7 @@ export class API {
           ...smartPhones,
           new Smartphone(id, name, brand, image, description),
         ];
-        resolve();
+        resolve(smartPhones);
       }, 500);
     });
   }

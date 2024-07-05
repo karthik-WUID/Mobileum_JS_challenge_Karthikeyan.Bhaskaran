@@ -8,31 +8,21 @@ import {
   SubmitButton,
   SuccessContainer,
 } from "./styles";
-import { API } from "../../Providers/api";
+import { API, Smartphone } from "../../Providers/api";
 import {
   GlobalContext,
   GlobalContextType,
 } from "../../Providers/global-provider";
+import { defaultValueTypes, initialDefaultValues, smartPhoneTypes } from "../../Utilities/constants";
 
 const CreateSmartPhoneForm: React.FC = () => {
   const { setSmartPhoneData } = useContext(GlobalContext) as GlobalContextType;
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const [formData, setFormData] = useState<any>({
-    name: "",
-    brand: "",
-    image: "",
-    description: "",
-  });
+  const [formData, setFormData] = useState<defaultValueTypes>(initialDefaultValues);
+  const [errors, setErrors] = useState<defaultValueTypes>(initialDefaultValues);
 
-  const [errors, setErrors] = useState({
-    name: "",
-    brand: "",
-    image: "",
-    description: "",
-  });
-
-  const handleChange = (event: any) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormData({
       ...formData,
@@ -41,7 +31,7 @@ const CreateSmartPhoneForm: React.FC = () => {
   };
 
   const validateForm = () => {
-    let formErrors: any = {};
+    let formErrors: defaultValueTypes = {};
     let isValid = true;
 
     for (let key in formData) {
@@ -54,7 +44,7 @@ const CreateSmartPhoneForm: React.FC = () => {
     return isValid;
   };
 
-  const handleSubmit = (event: any) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (validateForm()) {
       API.add(
@@ -63,7 +53,7 @@ const CreateSmartPhoneForm: React.FC = () => {
         formData.image,
         formData.description
       )
-        .then((response: any) => {
+        .then((response: smartPhoneTypes[]) => {
           setSmartPhoneData(response);
           setIsSuccess(true);
         })

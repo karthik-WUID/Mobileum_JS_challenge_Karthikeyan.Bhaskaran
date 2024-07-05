@@ -20,20 +20,23 @@ import {
   GlobalContext,
   GlobalContextType,
 } from "../../Providers/global-provider";
-import { API } from "../../Providers/api";
+import { API, Smartphone } from "../../Providers/api";
+import { smartPhoneTypes } from "../../Utilities/constants";
 
 interface TileProps {
-  tileData: any;
+  tileData: smartPhoneTypes[];
   isTile: boolean;
+  setFilteredSmartPhone?: React.Dispatch<React.SetStateAction<smartPhoneTypes[]>>;
 }
 
-const Tile: React.FC<TileProps> = ({ tileData, isTile }) => {
+const Tile: React.FC<TileProps> = ({ tileData, isTile, setFilteredSmartPhone }) => {
   const { setSmartPhoneData } = useContext(GlobalContext) as GlobalContextType;
 
-  const RemoveSmartPhone = (smartPhone: any) => {
+  const RemoveSmartPhone = (smartPhone: smartPhoneTypes) => {
     API.remove(smartPhone.id)
-      .then((response: any) => {
+      .then((response: Smartphone[]) => {
         setSmartPhoneData(response);
+        setFilteredSmartPhone && setFilteredSmartPhone(response)
       })
       .catch((error) => {
         console.log("error - - - - - ", error);
@@ -45,14 +48,14 @@ const Tile: React.FC<TileProps> = ({ tileData, isTile }) => {
       {isTile ? (
         <DashboardTileWrapper>
           {tileData &&
-            tileData.map((smartPhone: any) => {
+            tileData.map((smartPhone: smartPhoneTypes) => {
               return (
                 <DashboardTileContainer key={ smartPhone.name }>
                   <CloseButton onClick={() => RemoveSmartPhone(smartPhone)}>
                     x
                   </CloseButton>
                   <ImageContainer>
-                    <img src={smartPhone.image} width={80} height={80} />
+                    <img src={`${smartPhone.image}`} width={80} height={80} />
                   </ImageContainer>
                   <ContentContainer>
                     <NameContent>{smartPhone.name}</NameContent>
@@ -71,11 +74,11 @@ const Tile: React.FC<TileProps> = ({ tileData, isTile }) => {
             <ListDescriptions>Description</ListDescriptions>
           </DashboardListContainer>
           {tileData &&
-            tileData.map((smartPhone: any) => {
+            tileData.map((smartPhone: smartPhoneTypes) => {
               return (
                 <DashboardListContainer key={ smartPhone.name }>
                   <ImageContainer>
-                    <img src={smartPhone.image} width={80} height={80} />
+                    <img src={`${smartPhone.image}`} width={80} height={80} />
                   </ImageContainer>
                   <ListNameContent>{smartPhone.name}</ListNameContent>
                   <ListBrandDetails>{smartPhone.brand}</ListBrandDetails>

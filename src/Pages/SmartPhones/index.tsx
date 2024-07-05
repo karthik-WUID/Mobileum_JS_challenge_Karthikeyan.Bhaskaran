@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import Tile from "../../Components/Tile";
 
 import { SmartPhonesContainer, CreateButtonLink, Heading } from "./styles";
+import { smartPhoneTypes } from "../../Utilities/constants";
 
 const SmartPhones: React.FC = () => {
   const { smartPhoneData, setSmartPhoneData } = useContext(
@@ -17,7 +18,7 @@ const SmartPhones: React.FC = () => {
   useEffect(() => {
     if (!smartPhoneData || smartPhoneData.length < 1) {
       API.getAll()
-        .then((response: any) => {
+        .then((response: smartPhoneTypes[]) => {
           setSmartPhoneData(response);
         })
         .catch((error) => {

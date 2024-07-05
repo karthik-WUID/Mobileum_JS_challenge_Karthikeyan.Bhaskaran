@@ -4,11 +4,12 @@ import {
     useState,
     SetStateAction
 } from "react";
+import { smartPhoneTypes } from "../Utilities/constants";
 
 export type GlobalContextType = {
     theme: string;
     setTheme: (value: string) => void;
-    smartPhoneData: any[];
+    smartPhoneData: smartPhoneTypes[];
     setSmartPhoneData: (value: SetStateAction<any[]>) => void;
 };
 
